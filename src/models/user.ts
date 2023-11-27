@@ -9,12 +9,6 @@ const userSchema = new mongoose.Schema({
     type: String,  // Use the String constructor
     required: true,
   },
-  purchasedCourse: [
-    {
-      type: mongoose.Types.ObjectId,
-      ref: "Course",
-    },
-  ],
 });
 
 export const User = mongoose.models.User || mongoose.model("User", userSchema);

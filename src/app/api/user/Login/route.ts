@@ -2,6 +2,7 @@ import { connect } from "@/dbConfig/dbConfig";
 import { User } from "@/models/user";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import jwt from"jsonwebtoken";
 
 connect();
 
@@ -27,7 +28,13 @@ export async function POST(request: NextRequest) {
         // User found, check the password
         if (checkUser.password === password) {
           console.log('User successfully logged in');
-          return NextResponse.json({ message: "User successfully logged in" }, { status: 200 });
+          const payload={
+            email: checkUser.email,
+            password: checkUser.password
+          }
+          const token = jwt.sign(payload, process.env.SECRET!, { expiresIn: '1h' });
+        
+          return NextResponse.json({ message: "User successfully logged in",token });
         } else {
           return NextResponse.json({ message: "Invalid password" }, { status: 400 });
         }

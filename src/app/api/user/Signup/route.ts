@@ -38,6 +38,7 @@ export async function POST(request: NextRequest) {
             email:newUser.email,
         }
         const token = jwt.sign(payload, process.env.SECRET!, { expiresIn: '1h' });
+        
 
 
         return NextResponse.json({ message: "User created successfully",token:token }, { status: 200 });

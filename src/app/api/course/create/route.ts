@@ -1,4 +1,5 @@
 import { connect } from "@/dbConfig/dbConfig";
+import AuthUser from "@/middleware/auth";
 import { Course } from "@/models/course";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -14,6 +15,9 @@ const zodData = z.object({
 });
 
 export async function POST(request: NextRequest) {
+  const validUser=await AuthUser(request);
+  console.log(validUser);
+  if(validUser){
   const reqBody = await request.json();
   console.log(reqBody);
   const parsedBody=zodData.safeParse(reqBody);
@@ -30,7 +34,12 @@ export async function POST(request: NextRequest) {
     console.log('course created successfully');
     return NextResponse.json(newCourse);
   }
+
   else{
     return NextResponse.json(parsedBody.error);
   }
+}
+else{
+  return NextResponse.json({message:'error in veryfing the user'},{status:404});
+}
 }
