@@ -30,8 +30,10 @@ export async function POST(request: NextRequest) {
           console.log('User successfully logged in');
           const payload={
             email: checkUser.email,
-            password: checkUser.password
-          }
+            password: checkUser.password,
+            id: checkUser._id
+          } 
+          console.log(checkUser._id);
           const token = jwt.sign(payload, process.env.SECRET!, { expiresIn: '1h' });
         
           return NextResponse.json({ message: "User successfully logged in",token });

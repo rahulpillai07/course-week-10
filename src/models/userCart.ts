@@ -1,14 +1,16 @@
     import mongoose from "mongoose";
 
-    const userCourseSchema= new mongoose.Schema({
+    const CartSchema= new mongoose.Schema({
         userCartId:{
             type:mongoose.Types.ObjectId,
-            ref:'User'
+            ref:'User',
+            unique:true,
+            sparse:true,
         },
-        purchasedCourse:{
+        purchasedCourse:[{
             type:mongoose.Types.ObjectId,
             ref:'Course'
-        }
+        }]
     });
 
-    export const UserCourse=mongoose.models.usercourses|| mongoose.model('UserCourse',userCourseSchema);
+    export const Cart=mongoose.models.Cart|| mongoose.model('Cart',CartSchema);

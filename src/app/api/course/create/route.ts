@@ -1,8 +1,10 @@
 import { connect } from "@/dbConfig/dbConfig";
 import AuthUser from "@/middleware/auth";
+import { Admin } from "@/models/admin";
 import { Course } from "@/models/course";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+
 
 connect();
 
@@ -15,9 +17,10 @@ const zodData = z.object({
 });
 
 export async function POST(request: NextRequest) {
+
   const validUser=await AuthUser(request);
   console.log(validUser);
-  if(validUser){
+  if(validUser.role!=="user"){
   const reqBody = await request.json();
   console.log(reqBody);
   const parsedBody=zodData.safeParse(reqBody);
@@ -40,6 +43,6 @@ export async function POST(request: NextRequest) {
   }
 }
 else{
-  return NextResponse.json({message:'error in veryfing the user'},{status:404});
+  return NextResponse.json({message:'error in veryfing the admin'},{status:404});
 }
 }

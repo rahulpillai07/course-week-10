@@ -1,5 +1,6 @@
+import { User } from "@/models/user";
 import jwt from "jsonwebtoken";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
@@ -10,7 +11,16 @@ const AuthUser = async (req:NextRequest) => {
 
   try {
     const extractAuthUserInfo = jwt.verify(token,process.env.SECRET!);
-    if (extractAuthUserInfo) return extractAuthUserInfo;
+    if (extractAuthUserInfo) {
+      const userId=extractAuthUserInfo.id
+      const user =await User.findById(userId);
+      if(user){
+        req.user=user;
+        console.log("User",user);
+        return user
+      }
+
+    }
   } catch (e) {
     console.log(e);
     return false;

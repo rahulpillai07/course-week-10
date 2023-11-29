@@ -2,6 +2,7 @@ import { connect } from "@/dbConfig/dbConfig";
 import { Admin } from "@/models/admin";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import jwt from "jsonwebtoken";
 
 connect();
 
@@ -27,6 +28,13 @@ export async function POST(request: NextRequest) {
         // admin found, check the password
         if (checkadmin.password === password) {
           console.log('admin successfully logged in');
+          const payload={
+            email:checkadmin.email,
+            password:checkadmin.password,
+            id:checkadmin._id
+            
+          }
+          const token =jwt.sign
           return NextResponse.json({ message: "admin successfully logged in" }, { status: 200 });
         } else {
           return NextResponse.json({ message: "Invalid password" }, { status: 400 });

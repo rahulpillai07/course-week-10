@@ -9,6 +9,11 @@ const userSchema = new mongoose.Schema({
     type: String,  // Use the String constructor
     required: true,
   },
+  role:{
+    type: String, // Use the String constructor, not "string"
+    enum: ["admin", "user"],
+    default: "user"
+  }
 });
 
 export const User = mongoose.models.User || mongoose.model("User", userSchema);
